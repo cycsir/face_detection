@@ -1,5 +1,4 @@
-
-import { Runner } from '@paddlejs/paddlejs-core';
+import {Runner} from '@paddlejs/paddlejs-core';
 import '@paddlejs/paddlejs-backend-webgl';
 
 interface FeedShape {
@@ -30,11 +29,17 @@ const defaultFeedShape: FeedShape = {
     fh: 1024
 };
 const defaultModelConfig: ModelConfig = {
-    modelPath: 'https://paddlejs.cdn.bcebos.com/models/fuse/facedetect_opt/model.json',
-    // modelPath: '../model/face_detection/model.json',
+    // modelPath: 'https://paddlejs.cdn.bcebos.com/models/fuse/facedetect_opt/model.json',
+    modelPath: '../model/face_detection/model.json',
     mean: [0.407843137, 0.458823529, 0.482352941],
     std: [0.5, 0.5, 0.5]
 };
+// todo 配置参数
+export const faceLandMarkModelConfig: ModelConfig = {
+    modelPath : '../model/face_landmark/model.json',
+    mean: [0.407843137, 0.458823529, 0.482352941],
+    std: [0.5, 0.5, 0.5]
+}
 
 export class FaceDetector {
     modelConfig: ModelConfig = defaultModelConfig;
@@ -102,13 +107,29 @@ export class FaceDetector {
         }
         const dx = (fw - dWidth) / 2;
         const dy = (fh - dHeight) / 2;
-        transformRes.confidence = data[1];
-        transformRes.left = (data[2] * fw - dx) / dWidth;
-        transformRes.width = (data[4] - data[2]) * fw / dWidth;
-        transformRes.top = (data[3] * fh - dy) / dHeight;
-        transformRes.height = (data[5] - data[3]) * fh / dHeight;
+        if (data.length >= 5) {
+            transformRes.confidence = data[1];
+            transformRes.left = (data[2] * fw - dx) / dWidth;
+            transformRes.width = (data[4] - data[2]) * fw / dWidth;
+            transformRes.top = (data[3] * fh - dy) / dHeight;
+            transformRes.height = (data[5] - data[3]) * fh / dHeight;
+        }
+        else {
+            transformRes.confidence = data[1];
+            transformRes.left = (data[2] * fw - dx) / dWidth;
+            transformRes.top = (data[3] * fh - dy) / dHeight;
+        }
+
         return transformRes;
     }
+
+    async keypointDetection(
+        input: HTMLImageElement,
+        opts?
+    ){
+        await this.detect(input, opts);
+    }
+
 }
 
 export function createImage(imgPath: string): Promise<HTMLImageElement> {

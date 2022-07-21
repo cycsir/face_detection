@@ -1,7 +1,12 @@
 {
     "chunkNum": 1, 
-    "dataLayout": "nchw", 
-    "feedShape": null, 
+    "dataLayout": "nchw",
+    "feedShape": {
+        "fc": 1,
+        "fh": 60,
+        "fw": 60
+    },
+    "gpuOpt": true,
     "multiOutputs": [
         {
             "name": "tmp_28", 

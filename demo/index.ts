@@ -1,4 +1,5 @@
 import { FaceDetector, createImage } from '../src/index';
+import {faceLandMarkModelConfig} from "../src/index";
 
 const resCanvas = document.getElementById('resCanvas') as HTMLCanvasElement;
 const resCtx = resCanvas.getContext('2d') as CanvasRenderingContext2D;
@@ -6,6 +7,7 @@ const defaultImgPath = '../img/multi_small_face.jpeg';
 const fileReader = new FileReader();
 const loading = document.getElementById('loading');
 const faceDetector = new FaceDetector();
+const faceLandMarker = new FaceDetector(faceLandMarkModelConfig);
 
 load();
 document.getElementById('uploadImg')!.onchange = function () {
@@ -14,7 +16,9 @@ document.getElementById('uploadImg')!.onchange = function () {
 
 async function load() {
     await faceDetector.init();
+    await faceLandMarker.init();
     run(defaultImgPath);
+
 }
 
 async function run(imgPath: string) {
@@ -24,9 +28,9 @@ async function run(imgPath: string) {
     // 预测
     const res = await faceDetector.detect(imgEle);
     drawRes(res);
-
     // 人脸关键点检测
-
+    // const landMarkRes = await faceLandMarker.keypointDetection(imgEle);
+    // drawKeyPointDetectionRes(landMarkRes)
     loading.style.display = 'none';
 }
 
@@ -61,9 +65,10 @@ function drawKeyPointDetectionRes(data) {
     data.forEach(item => {
         const x = item.left * resCanvas.width;
         const y = item.top * resCanvas.height;
-        const w = item.width * resCanvas.width;
-        const h = item.height * resCanvas.height;
-        resCtx.strokeRect(x, y, w, h);
+        const radius = 1;
+        const startAngle = 0;
+        const endAngle = 2 * Math.PI;
+        resCtx.arc(x, y, radius, startAngle, endAngle);
         resCtx.fillText(item.confidence.toFixed(6), x, y);
     });
 }
