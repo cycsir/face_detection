@@ -1,0 +1,1026 @@
+{
+    "chunkNum": 1, 
+    "dataLayout": "nchw", 
+    "feedShape": {
+        "fc": 1, 
+        "fh": 60, 
+        "fw": 60
+    }, 
+    "ops": [
+        {
+            "attrs": {
+                "with_quant_attr": false
+            }, 
+            "inputs": {
+                "X": [
+                    "feed"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "image"
+                ]
+            }, 
+            "type": "feed"
+        }, 
+        {
+            "attrs": {
+                "Scale_in": 1.0, 
+                "Scale_in_eltwise": 1.0, 
+                "Scale_out": 1.0, 
+                "Scale_weights": [
+                    1.0
+                ], 
+                "dilations": [
+                    1, 
+                    1
+                ], 
+                "exhaustive_search": false, 
+                "force_fp32_output": false, 
+                "fuse_activation": "", 
+                "fuse_alpha": 0.0, 
+                "fuse_beta": 0.0, 
+                "fuse_brelu": false, 
+                "fuse_brelu_threshold": 6.0, 
+                "fuse_relu": false, 
+                "fuse_relu_before_depthwise_conv": false, 
+                "fuse_residual_connection": false, 
+                "groups": 1, 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    2, 
+                    2
+                ], 
+                "strides": [
+                    1, 
+                    1
+                ]
+            }, 
+            "inputs": {
+                "Filter": [
+                    "Conv1_weights"
+                ], 
+                "Input": [
+                    "image"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv1.tmp_0"
+                ]
+            }, 
+            "type": "conv2d"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Conv1.tmp_0"
+                ], 
+                "Y": [
+                    "Conv1_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv1.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "Conv1.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationTangH1.tmp_0"
+                ]
+            }, 
+            "type": "tanh"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "ActivationTangH1.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationAbs1.tmp_0"
+                ]
+            }, 
+            "type": "abs"
+        }, 
+        {
+            "attrs": {
+                "adaptive": false, 
+                "ceil_mode": true, 
+                "exclusive": false, 
+                "global_pooling": false, 
+                "ksize": [
+                    2, 
+                    2
+                ], 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    0, 
+                    0
+                ], 
+                "pooling_type": "max", 
+                "strides": [
+                    2, 
+                    2
+                ]
+            }, 
+            "inputs": {
+                "X": [
+                    "ActivationAbs1.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Pool1.tmp_0"
+                ]
+            }, 
+            "type": "pool2d"
+        }, 
+        {
+            "attrs": {
+                "Scale_in": 1.0, 
+                "Scale_in_eltwise": 1.0, 
+                "Scale_out": 1.0, 
+                "Scale_weights": [
+                    1.0
+                ], 
+                "dilations": [
+                    1, 
+                    1
+                ], 
+                "exhaustive_search": false, 
+                "force_fp32_output": false, 
+                "fuse_activation": "", 
+                "fuse_alpha": 0.0, 
+                "fuse_beta": 0.0, 
+                "fuse_brelu": false, 
+                "fuse_brelu_threshold": 6.0, 
+                "fuse_relu": false, 
+                "fuse_relu_before_depthwise_conv": false, 
+                "fuse_residual_connection": false, 
+                "groups": 1, 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    2, 
+                    2
+                ], 
+                "strides": [
+                    1, 
+                    1
+                ]
+            }, 
+            "inputs": {
+                "Filter": [
+                    "Conv2_weights"
+                ], 
+                "Input": [
+                    "Pool1.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv2.tmp_0"
+                ]
+            }, 
+            "type": "conv2d"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Conv2.tmp_0"
+                ], 
+                "Y": [
+                    "Conv2_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv2.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "Conv2.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationTangH2.tmp_0"
+                ]
+            }, 
+            "type": "tanh"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "ActivationTangH2.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationAbs2.tmp_0"
+                ]
+            }, 
+            "type": "abs"
+        }, 
+        {
+            "attrs": {
+                "adaptive": false, 
+                "ceil_mode": true, 
+                "exclusive": false, 
+                "global_pooling": false, 
+                "ksize": [
+                    2, 
+                    2
+                ], 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    0, 
+                    0
+                ], 
+                "pooling_type": "max", 
+                "strides": [
+                    2, 
+                    2
+                ]
+            }, 
+            "inputs": {
+                "X": [
+                    "ActivationAbs2.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Pool2.tmp_0"
+                ]
+            }, 
+            "type": "pool2d"
+        }, 
+        {
+            "attrs": {
+                "Scale_in": 1.0, 
+                "Scale_in_eltwise": 1.0, 
+                "Scale_out": 1.0, 
+                "Scale_weights": [
+                    1.0
+                ], 
+                "dilations": [
+                    1, 
+                    1
+                ], 
+                "exhaustive_search": false, 
+                "force_fp32_output": false, 
+                "fuse_activation": "", 
+                "fuse_alpha": 0.0, 
+                "fuse_beta": 0.0, 
+                "fuse_brelu": false, 
+                "fuse_brelu_threshold": 6.0, 
+                "fuse_relu": false, 
+                "fuse_relu_before_depthwise_conv": false, 
+                "fuse_residual_connection": false, 
+                "groups": 1, 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    0, 
+                    0
+                ], 
+                "strides": [
+                    1, 
+                    1
+                ]
+            }, 
+            "inputs": {
+                "Filter": [
+                    "Conv3_weights"
+                ], 
+                "Input": [
+                    "Pool2.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv3.tmp_0"
+                ]
+            }, 
+            "type": "conv2d"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Conv3.tmp_0"
+                ], 
+                "Y": [
+                    "Conv3_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv3.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "Conv3.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationTangH3.tmp_0"
+                ]
+            }, 
+            "type": "tanh"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "ActivationTangH3.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationAbs3.tmp_0"
+                ]
+            }, 
+            "type": "abs"
+        }, 
+        {
+            "attrs": {
+                "adaptive": false, 
+                "ceil_mode": true, 
+                "exclusive": false, 
+                "global_pooling": false, 
+                "ksize": [
+                    3, 
+                    3
+                ], 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    0, 
+                    0
+                ], 
+                "pooling_type": "max", 
+                "strides": [
+                    2, 
+                    2
+                ]
+            }, 
+            "inputs": {
+                "X": [
+                    "ActivationAbs3.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Pool3.tmp_0"
+                ]
+            }, 
+            "type": "pool2d"
+        }, 
+        {
+            "attrs": {
+                "Scale_in": 1.0, 
+                "Scale_in_eltwise": 1.0, 
+                "Scale_out": 1.0, 
+                "Scale_weights": [
+                    1.0
+                ], 
+                "dilations": [
+                    1, 
+                    1
+                ], 
+                "exhaustive_search": false, 
+                "force_fp32_output": false, 
+                "fuse_activation": "", 
+                "fuse_alpha": 0.0, 
+                "fuse_beta": 0.0, 
+                "fuse_brelu": false, 
+                "fuse_brelu_threshold": 6.0, 
+                "fuse_relu": false, 
+                "fuse_relu_before_depthwise_conv": false, 
+                "fuse_residual_connection": false, 
+                "groups": 1, 
+                "padding_algorithm": "EXPLICIT", 
+                "paddings": [
+                    0, 
+                    0
+                ], 
+                "strides": [
+                    1, 
+                    1
+                ]
+            }, 
+            "inputs": {
+                "Filter": [
+                    "Conv4_weights"
+                ], 
+                "Input": [
+                    "Pool3.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv4.tmp_0"
+                ]
+            }, 
+            "type": "conv2d"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Conv4.tmp_0"
+                ], 
+                "Y": [
+                    "Conv4_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Conv4.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "Conv4.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationTangH4.tmp_0"
+                ]
+            }, 
+            "type": "tanh"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "ActivationTangH4.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationAbs4.tmp_0"
+                ]
+            }, 
+            "type": "abs"
+        }, 
+        {
+            "attrs": {
+                "force_fp32_output": false, 
+                "scale_out": 1.0, 
+                "scale_x": 1.0, 
+                "scale_y": [
+                    1.0
+                ], 
+                "x_num_col_dims": 1, 
+                "y_num_col_dims": 1
+            }, 
+            "inputs": {
+                "X": [
+                    "ActivationAbs4.tmp_0"
+                ], 
+                "Y": [
+                    "Dense1_weights"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Dense1.tmp_0"
+                ]
+            }, 
+            "type": "mul"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Dense1.tmp_0"
+                ], 
+                "Y": [
+                    "Dense1_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Dense1.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "Dense1.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationTangH5.tmp_0"
+                ]
+            }, 
+            "type": "tanh"
+        }, 
+        {
+            "attrs": {}, 
+            "inputs": {
+                "X": [
+                    "ActivationTangH5.tmp_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "ActivationAbs5.tmp_0"
+                ]
+            }, 
+            "type": "abs"
+        }, 
+        {
+            "attrs": {
+                "force_fp32_output": false, 
+                "scale_out": 1.0, 
+                "scale_x": 1.0, 
+                "scale_y": [
+                    1.0
+                ], 
+                "x_num_col_dims": 1, 
+                "y_num_col_dims": 1
+            }, 
+            "inputs": {
+                "X": [
+                    "ActivationAbs5.tmp_0"
+                ], 
+                "Y": [
+                    "Dense3_weights"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Dense3.tmp_0"
+                ]
+            }, 
+            "type": "mul"
+        }, 
+        {
+            "attrs": {
+                "axis": 1, 
+                "x_data_format": "", 
+                "y_data_format": ""
+            }, 
+            "inputs": {
+                "X": [
+                    "Dense3.tmp_0"
+                ], 
+                "Y": [
+                    "Dense3_bias"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "Dense3.tmp_1"
+                ]
+            }, 
+            "type": "elementwise_add"
+        }, 
+        {
+            "attrs": {
+                "bias": 0.0, 
+                "bias_after_scale": true, 
+                "scale": 1.0
+            }, 
+            "inputs": {
+                "X": [
+                    "Dense3.tmp_1"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "save_infer_model/scale_0"
+                ]
+            }, 
+            "type": "scale"
+        }, 
+        {
+            "attrs": {
+                "with_quant_attr": false
+            }, 
+            "inputs": {
+                "X": [
+                    "save_infer_model/scale_0"
+                ]
+            }, 
+            "outputs": {
+                "Out": [
+                    "fetch"
+                ]
+            }, 
+            "type": "fetch"
+        }
+    ], 
+    "vars": {
+        "ActivationAbs1.tmp_0": {
+            "name": "ActivationAbs1.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                20, 
+                60, 
+                60
+            ]
+        }, 
+        "ActivationAbs2.tmp_0": {
+            "name": "ActivationAbs2.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                48, 
+                30, 
+                30
+            ]
+        }, 
+        "ActivationAbs3.tmp_0": {
+            "name": "ActivationAbs3.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                64, 
+                13, 
+                13
+            ]
+        }, 
+        "ActivationAbs4.tmp_0": {
+            "name": "ActivationAbs4.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                80, 
+                4, 
+                4
+            ]
+        }, 
+        "ActivationAbs5.tmp_0": {
+            "name": "ActivationAbs5.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                512
+            ]
+        }, 
+        "ActivationTangH1.tmp_0": {
+            "name": "ActivationTangH1.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                20, 
+                60, 
+                60
+            ]
+        }, 
+        "ActivationTangH2.tmp_0": {
+            "name": "ActivationTangH2.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                48, 
+                30, 
+                30
+            ]
+        }, 
+        "ActivationTangH3.tmp_0": {
+            "name": "ActivationTangH3.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                64, 
+                13, 
+                13
+            ]
+        }, 
+        "ActivationTangH4.tmp_0": {
+            "name": "ActivationTangH4.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                80, 
+                4, 
+                4
+            ]
+        }, 
+        "ActivationTangH5.tmp_0": {
+            "name": "ActivationTangH5.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                512
+            ]
+        }, 
+        "Conv1.tmp_0": {
+            "name": "Conv1.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                20, 
+                60, 
+                60
+            ]
+        }, 
+        "Conv1.tmp_1": {
+            "name": "Conv1.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                20, 
+                60, 
+                60
+            ]
+        }, 
+        "Conv1_bias": {
+            "name": "Conv1_bias", 
+            "persistable": true, 
+            "shape": [
+                20
+            ]
+        }, 
+        "Conv1_weights": {
+            "name": "Conv1_weights", 
+            "persistable": true, 
+            "shape": [
+                20, 
+                1, 
+                5, 
+                5
+            ]
+        }, 
+        "Conv2.tmp_0": {
+            "name": "Conv2.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                48, 
+                30, 
+                30
+            ]
+        }, 
+        "Conv2.tmp_1": {
+            "name": "Conv2.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                48, 
+                30, 
+                30
+            ]
+        }, 
+        "Conv2_bias": {
+            "name": "Conv2_bias", 
+            "persistable": true, 
+            "shape": [
+                48
+            ]
+        }, 
+        "Conv2_weights": {
+            "name": "Conv2_weights", 
+            "persistable": true, 
+            "shape": [
+                48, 
+                20, 
+                5, 
+                5
+            ]
+        }, 
+        "Conv3.tmp_0": {
+            "name": "Conv3.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                64, 
+                13, 
+                13
+            ]
+        }, 
+        "Conv3.tmp_1": {
+            "name": "Conv3.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                64, 
+                13, 
+                13
+            ]
+        }, 
+        "Conv3_bias": {
+            "name": "Conv3_bias", 
+            "persistable": true, 
+            "shape": [
+                64
+            ]
+        }, 
+        "Conv3_weights": {
+            "name": "Conv3_weights", 
+            "persistable": true, 
+            "shape": [
+                64, 
+                48, 
+                3, 
+                3
+            ]
+        }, 
+        "Conv4.tmp_0": {
+            "name": "Conv4.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                80, 
+                4, 
+                4
+            ]
+        }, 
+        "Conv4.tmp_1": {
+            "name": "Conv4.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                80, 
+                4, 
+                4
+            ]
+        }, 
+        "Conv4_bias": {
+            "name": "Conv4_bias", 
+            "persistable": true, 
+            "shape": [
+                80
+            ]
+        }, 
+        "Conv4_weights": {
+            "name": "Conv4_weights", 
+            "persistable": true, 
+            "shape": [
+                80, 
+                64, 
+                3, 
+                3
+            ]
+        }, 
+        "Dense1.tmp_0": {
+            "name": "Dense1.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                512
+            ]
+        }, 
+        "Dense1.tmp_1": {
+            "name": "Dense1.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                512
+            ]
+        }, 
+        "Dense1_bias": {
+            "name": "Dense1_bias", 
+            "persistable": true, 
+            "shape": [
+                512
+            ]
+        }, 
+        "Dense1_weights": {
+            "name": "Dense1_weights", 
+            "persistable": true, 
+            "shape": [
+                1280, 
+                512
+            ]
+        }, 
+        "Dense3.tmp_0": {
+            "name": "Dense3.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                136
+            ]
+        }, 
+        "Dense3.tmp_1": {
+            "name": "Dense3.tmp_1", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                136
+            ]
+        }, 
+        "Dense3_bias": {
+            "name": "Dense3_bias", 
+            "persistable": true, 
+            "shape": [
+                136
+            ]
+        }, 
+        "Dense3_weights": {
+            "name": "Dense3_weights", 
+            "persistable": true, 
+            "shape": [
+                512, 
+                136
+            ]
+        }, 
+        "Pool1.tmp_0": {
+            "name": "Pool1.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                20, 
+                30, 
+                30
+            ]
+        }, 
+        "Pool2.tmp_0": {
+            "name": "Pool2.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                48, 
+                15, 
+                15
+            ]
+        }, 
+        "Pool3.tmp_0": {
+            "name": "Pool3.tmp_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                64, 
+                6, 
+                6
+            ]
+        }, 
+        "data": {
+            "name": "data", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                1, 
+                60, 
+                60
+            ]
+        }, 
+        "save_infer_model/scale_0": {
+            "name": "save_infer_model/scale_0", 
+            "persistable": false, 
+            "shape": [
+                1, 
+                136
+            ]
+        }
+    }
+}
